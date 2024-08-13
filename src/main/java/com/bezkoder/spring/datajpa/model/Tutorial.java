@@ -1,5 +1,8 @@
 package com.bezkoder.spring.datajpa.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -19,8 +22,18 @@ public class Tutorial {
 	@Column(name = "published")
 	private boolean published;
 
-	public Tutorial() {
+	@ManyToOne
+	@JsonManagedReference
+	private User user;
 
+	// Constructors
+	public Tutorial() {}
+
+	public Tutorial(String title, String description, boolean published, User user) {
+		this.title = title;
+		this.description = description;
+		this.published = published;
+		this.user = user;
 	}
 
 	public Tutorial(String title, String description, boolean published) {
@@ -55,6 +68,14 @@ public class Tutorial {
 
 	public void setPublished(boolean isPublished) {
 		this.published = isPublished;
+	}
+
+	public User getUser() {
+		return this.user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	@Override
